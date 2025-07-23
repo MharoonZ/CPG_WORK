@@ -3,6 +3,7 @@ Utilities Module
 
 This module contains utility functions for the application.
 """
+import streamlit as st
 
 import os
 import logging
@@ -23,12 +24,15 @@ def setup_logging(level: int = logging.INFO) -> None:
 
 def validate_api_key() -> bool:
     """
-    Validate that the OpenAI API key is set.
+    Validate that the OpenAI API key is set in Streamlit Secrets.
     
     Returns:
         True if API key is set, False otherwise
     """
-    api_key = os.environ.get("OPENAI_API_KEY")
+    # Fetch the API key from Streamlit Secrets
+    api_key = st.secrets["general"].get("OPENAI_API_KEY")
+    
+    # Return True if the API key exists and is not empty
     return api_key is not None and len(api_key) > 0
 
 def format_recommendation(recommendation: str) -> str:
