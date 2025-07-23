@@ -5,7 +5,7 @@ Heart Failure Guidelines Recommendation System
 Processes clinician input about heart failure patients and provides evidence-based recommendations
 from the 2022 AHA/ACC/HFSA Heart Failure Guidelines.
 """
-
+import streamlit as st
 import os
 import sys
 import argparse
@@ -164,12 +164,14 @@ def main() -> int:
         print("="*80)
 
     # Check API key
-    if not os.environ.get("OPENAI_API_KEY"):
-        if USE_RICH:
-            console.print("[bold red]OpenAI API key is not set. Please set the OPENAI_API_KEY environment variable.[/bold red]")
-        else:
-            print("OpenAI API key is not set. Please set the OPENAI_API_KEY environment variable.")
-        return 1
+api_key = st.secrets["general"].get("OPENAI_API_KEY")
+if not api_key:
+    if USE_RICH:
+        console.print("[bold red]OpenAI API key is not set. Please set the OPENAI_API_KEY in Streamlit Secrets.[/bold red]")
+    else:
+        print("OpenAI API key is not set. Please set the OPENAI_API_KEY in Streamlit Secrets.")
+    return 1
+
 
     # Preprocess guidelines if requested
     if args.preprocess:
