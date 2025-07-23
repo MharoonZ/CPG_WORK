@@ -3,7 +3,7 @@ LLM Interface Module
 
 Handles interactions with the OpenAI API for generating recommendations.
 """
-
+import streamlit as st
 import os
 import json
 import logging
@@ -19,13 +19,11 @@ from text_extractor import extract_patient_data
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Load environment variables
-load_dotenv()
-
-# Initialize OpenAI client
-api_key = os.getenv("OPENAI_API_KEY")
+# Initialize OpenAI client using Streamlit Secrets
+api_key = st.secrets["general"]["OPENAI_API_KEY"]
 if not api_key:
-    raise ValueError("OPENAI_API_KEY not found in environment variables. Please set it in .env file.")
+    raise ValueError("OPENAI_API_KEY not found in Streamlit secrets. Please set it in Secrets.toml.")
+
 
 client = OpenAI(api_key=api_key)
 
